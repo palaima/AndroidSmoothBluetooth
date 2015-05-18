@@ -1,4 +1,4 @@
-package com.palaima.bluetoothmanager;
+package com.palaima.bluetooth.app;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

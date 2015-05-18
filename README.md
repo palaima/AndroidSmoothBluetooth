@@ -1,1 +1,1 @@
-# AndroidBlueoothManager
+# AndroidBluetoothManager
