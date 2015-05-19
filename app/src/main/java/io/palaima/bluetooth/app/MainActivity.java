@@ -6,7 +6,7 @@ import com.palaima.bluetooth.app.R;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +28,7 @@ import io.palaima.bluetooth.BluetoothHelper;
 import io.palaima.bluetooth.Device;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     public static final int ENABLE_BT__REQUEST = 1;
 
