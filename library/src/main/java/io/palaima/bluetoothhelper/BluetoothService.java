@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.palaima.bluetooth;
+package io.palaima.bluetoothhelper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -28,9 +28,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.UUID;
 
-/**
- * Created by Mantas on 1/31/2015.
- */
 class BluetoothService {
     private static final String TAG = "BluetoothService";
 

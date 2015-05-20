@@ -13,11 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.palaima.bluetooth;
+package io.palaima.bluetoothhelper;
 
-/**
- * Created by Mantas on 1/31/2015.
- */
 public class Device {
     private final String mName;
     private final String mAddress;

@@ -1,4 +1,4 @@
-package io.palaima.bluetooth.app;
+package io.palaima.bluetoothhelper.app;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.palaima.bluetooth.app.R;
@@ -24,8 +24,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.palaima.bluetooth.BluetoothHelper;
-import io.palaima.bluetooth.Device;
+import io.palaima.bluetoothhelper.BluetoothHelper;
+import io.palaima.bluetoothhelper.Device;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -63,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_main);
 
-        mBluetoothHelper = new BluetoothHelper(this, mListener);
+        mBluetoothHelper = new BluetoothHelper(this);
+
+        mBluetoothHelper.setListener(mListener);
 
         ListView responseListView = (ListView) findViewById(R.id.responses);
         mResponsesAdapter = new ArrayAdapter<>( this, android.R.layout.simple_list_item_1, mResponseBuffer);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.palaima.bluetooth;
+package io.palaima.bluetoothhelper;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -30,20 +30,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Mantas on 1/31/2015.
- */
 public class BluetoothHelper {
 
-    private BluetoothAdapter mBluetoothAdapter;
+    public enum Connection {
+        SECURE,
+        INSECURE
+    }
 
-    private BluetoothService mBluetoothService;
-
-    private boolean isServiceRunning;
-
-    private boolean mIsAndroid;
-
-    private boolean mIsSecure;
+    public enum ConnectionTo {
+        ANDROID_DEVICE,
+        OTHER_DEVICE
+    }
 
     public interface ConnectionCallback {
         void connectTo(Device device);
@@ -65,31 +62,56 @@ public class BluetoothHelper {
 
     private static final String TAG = "BluetoothManager";
 
+    private BluetoothAdapter mBluetoothAdapter;
+
+    private BluetoothService mBluetoothService;
+
+    private boolean isServiceRunning;
+
+    private boolean mIsAndroid;
+
+    private boolean mIsSecure;
+
+    private boolean isConnected;
+
+    private boolean isConnecting;
+
     private final Context mContext;
-    private final Listener mListener;
+
+    private Listener mListener;
+
     private ArrayList<Device> mDevices = new ArrayList<>();
+
     private Device mCurrentDevice;
 
-    public BluetoothHelper(Context context, Listener listener) {
-        this(context, false, true, listener);
+    public BluetoothHelper(Context context) {
+        this(context, ConnectionTo.OTHER_DEVICE, Connection.SECURE, null);
     }
 
-    public BluetoothHelper(Context context, boolean android, boolean secure, Listener listener) {
+    public BluetoothHelper(Context context, Listener listener) {
+        this(context, ConnectionTo.OTHER_DEVICE, Connection.SECURE, listener);
+    }
+
+    public BluetoothHelper(Context context, ConnectionTo connectionTo, Connection connection, Listener listener) {
         mContext = context;
         mListener = listener;
-        mIsAndroid = android;
-        mIsSecure = secure;
+        mIsAndroid = connectionTo == ConnectionTo.ANDROID_DEVICE;
+        mIsSecure = connection == Connection.SECURE;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
     private boolean checkBluetooth() {
         if (!isBluetoothAvailable()) {
-            mListener.onBluetoothNotSupported();
+            if (mListener != null) {
+                mListener.onBluetoothNotSupported();
+            }
             return false;
         }
 
         if (!isBluetoothEnabled()) {
-            mListener.onBluetoothNotEnabled();
+            if (mListener != null) {
+                mListener.onBluetoothNotEnabled();
+            }
             return false;
         }
         return true;
@@ -159,9 +181,15 @@ public class BluetoothHelper {
         return mBluetoothAdapter.cancelDiscovery();
     }
 
+    public void setListener(Listener listener) {
+        mListener = listener;
+    }
+
     private void connect(Device device, boolean android, boolean secure) {
         mCurrentDevice = device;
-        mListener.onConnecting(device);
+        if (mListener != null) {
+            mListener.onConnecting(device);
+        }
         connect(device.getAddress(), android, secure);
     }
 
@@ -175,7 +203,9 @@ public class BluetoothHelper {
         }
         mCurrentDevice = null;
         mDevices.clear();
-        mListener.onDiscoveryStarted();
+        if (mListener != null) {
+            mListener.onDiscoveryStarted();
+        }
         Log.d(TAG, "doDiscovery()");
 
         if (isDiscovery()) {
@@ -208,24 +238,28 @@ public class BluetoothHelper {
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Log.d(TAG, "Discovery finished: " + mDevices.size());
                 mContext.unregisterReceiver(mReceiver);
-                mListener.onDiscoveryFinished();
+                if (mListener != null) {
+                    mListener.onDiscoveryFinished();
+                }
                 connectAction(mDevices, mIsAndroid, mIsSecure);
             }
         }
     };
 
     private void connectAction(List<Device> devices, final boolean android, final boolean secure) {
-        if (devices.isEmpty()) {
-            mListener.onNoDevicesFound();
-        } else {
-            mListener.onDevicesFound(devices, new ConnectionCallback() {
-                @Override
-                public void connectTo(Device device) {
-                    if (device != null) {
-                        connect(device, android, secure);
+        if (mListener != null) {
+            if (devices.isEmpty()) {
+                mListener.onNoDevicesFound();
+            } else {
+                mListener.onDevicesFound(devices, new ConnectionCallback() {
+                    @Override
+                    public void connectTo(Device device) {
+                        if (device != null) {
+                            connect(device, android, secure);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -326,10 +360,6 @@ public class BluetoothHelper {
             mBluetoothService.write(data.getBytes());
         }
     }
-
-    private boolean isConnected;
-
-    private boolean isConnecting;
 
     @SuppressLint("HandlerLeak")
     private final Handler mHandler = new Handler() {

@@ -1,4 +1,4 @@
-package io.palaima.bluetooth.app;
+package io.palaima.bluetoothhelper.app;
 
 
 import com.palaima.bluetooth.app.R;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import io.palaima.bluetooth.Device;
+import io.palaima.bluetoothhelper.Device;
 
 public class DevicesAdapter extends BaseAdapter {
 
