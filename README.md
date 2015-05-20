@@ -13,7 +13,7 @@ Easy communication with other android devices or microcontrollers such as Arduin
 ```java
 BluetoothHelper bluetoothHelper = new BluetoothHelper(Context context);
 ```
-there are possible overwrites:
+there are possible overrides:
 ```java
 BluetoothHelper bluetoothHelper = new BluetoothHelper(Context context, BluetoothHelper.Listener listener);
 ```
@@ -107,6 +107,32 @@ After everything is set up and all is left to do is try to connect
 mBluetoothHelper.tryConnection();
 ```
 `tryConnection()` is linked with BluetoothHelper.Listener so all connection events will be passed to listener.
+
+### 5. Sending data
+`boolean CRLF` indicates if data is need to be send with ending by LF and CR or not.
+```java
+mBluetoothHelper.send(byte[] data, boolean CRLF);
+```
+or
+```java
+mBluetoothHelper.send(String data, boolean CRLF);
+```
+if you do not need CRLF at the end there are some overrides with `CRLF = false`
+```java
+mBluetoothHelper.send(byte[] data);
+mBluetoothHelper.send(String data);
+```
+
+### 6. Do not forget to stop
+For instance in your activity where BluetoothHelper is defined you must call `stopService()`
+```java
+@Override
+protected void onDestroy() {
+    super.onDestroy();
+    mBluetoothHelper.stopService();
+}
+```
+
 
 ## Getting Started
 
