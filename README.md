@@ -1,6 +1,37 @@
 # Android Bluetooth Helper
 
-Easy communication with other android devices or microcontrollers such as Arduino via bluetooth.
+Easy communication via bluetooth with other android devices or microcontrollers such as Arduino.
+
+
+## Getting Started
+
+Add Gradle dependency:
+
+```gradle
+dependencies {
+   compile 'io.palaima:bluetoothhelper-0.1'
+}
+```
+
+* Or
+[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/bluetoothhelper/0.1/bluetoothhelper-0.1.aar)
+
+You can try the SNAPSHOT version:
+
+```gradle
+dependencies {
+   compile 'io.palaima:bluetoothhelper-0.2-SNAPSHOT'
+}
+```
+Make sure to add the snapshot repository:
+
+```gradle
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+    }
+}
+```
 
 ## Usage
 
@@ -133,36 +164,9 @@ protected void onDestroy() {
 }
 ```
 
+## Sample
 
-## Getting Started
-
-Add Gradle dependency:
-
-```gradle
-dependencies {
-   compile 'io.palaima:bluetoothhelper-0.1'
-}
-```
-
-* Or
-[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/bluetoothhelper/0.1/bluetoothhelper-0.1.aar)
-
-You can try the SNAPSHOT version:
-
-```gradle
-dependencies {
-   compile 'io.palaima:bluetoothhelper-0.2-SNAPSHOT'
-}
-```
-Make sure to add the snapshot repository:
-
-```gradle
-repositories {
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
-}
-```
+You can clone the project and compile it yourself (it includes a sample).
 
 ## Contributing
 Want to contribute? You are welcome!
