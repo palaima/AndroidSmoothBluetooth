@@ -109,7 +109,6 @@ mBluetoothHelper.tryConnection();
 `tryConnection()` is linked with BluetoothHelper.Listener so all connection events will be passed to listener.
 
 ### 5. Sending data
-`boolean CRLF` indicates if data is need to be send with ending by LF and CR or not.
 ```java
 mBluetoothHelper.send(byte[] data, boolean CRLF);
 ```
@@ -117,6 +116,7 @@ or
 ```java
 mBluetoothHelper.send(String data, boolean CRLF);
 ```
+`boolean CRLF` indicates if data is need to be send with ending by LF and CR or not.
 if you do not need CRLF at the end there are some overrides with `CRLF = false`
 ```java
 mBluetoothHelper.send(byte[] data);
