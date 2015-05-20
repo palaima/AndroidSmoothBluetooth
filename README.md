@@ -35,7 +35,7 @@ ConnectionTo.OTHER_DEVICE
 Connection.SECURE
 Connection.INSECURE
 ```
-
+### 3. Define BluetoothHelper.Listener
 After that you must define BluetoothHelper.Listener which catches all bluetooth related events and pass it to BluetoothHelper constructor when defining its instance or if you already have BluetoothHelper instance you can pass listener via setter `setListener(BluetoothHelperListener listener)`
 
 ```java
@@ -100,6 +100,7 @@ private BluetoothHelper.Listener mListener = new BluetoothHelper.Listener() {
 };
 ```
 
+### 4. Try to connect
 After everything is set up and all is left to do is try to connect
 
 ```java
