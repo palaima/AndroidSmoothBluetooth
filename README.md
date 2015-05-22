@@ -42,7 +42,7 @@ repositories {
 ```
 ### 2. Define SmoothBluetooth instance
 ```java
-SmoothBluetooth mSmoothBluetooth;
+private SmoothBluetooth mSmoothBluetooth;
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
@@ -147,8 +147,10 @@ mSmoothBluetooth.tryConnection();
 By default if everything is ok, immediately returns all paired devices to `SmoothBluetooth.Listener`'s `onDevicesFound`
 
 ### 5. Discovering
-
-Call ```javamSmoothBluetooth.doDiscovery()``` method which search for unpaired devices and returns them to `SmoothBluetooth.Listener`'s `onDevicesFound`
+```java
+mSmoothBluetooth.doDiscovery();
+```
+Call `doDiscovery()` method which search for unpaired devices and returns them to `SmoothBluetooth.Listener`'s `onDevicesFound`
 
 ### 6. Sending data
 ```java
