@@ -1,5 +1,11 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/releases"
+    }
+}
+
 android {
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
@@ -24,5 +30,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.1.1'
     compile 'com.android.support:recyclerview-v7:22.0.0'
     compile 'com.afollestad:material-dialogs:0.6.2.1'
-    compile project (':library')
+    //compile project (':library')
+    compile 'io.palaima:smoothbluetooth:0.1.0'
 }

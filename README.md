@@ -14,7 +14,7 @@ dependencies {
 ```
 
 * Or
-[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/smoothbluetooth/0.1/smoothbluetooth-0.1.aar)
+[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/smoothbluetooth/0.1.0/smoothbluetooth-0.1.0.aar)
 
 You can try the SNAPSHOT version:
 
