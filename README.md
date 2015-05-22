@@ -43,7 +43,12 @@ repositories {
 ### 2. Define SmoothBluetooth instance
 ```java
 SmoothBluetooth mSmoothBluetooth;
-mSmoothBluetooth = new SmoothBluetooth(Context context);
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    mSmoothBluetooth = new SmoothBluetooth(Context context);
+}
 ```
 there are possible overrides:
 ```java
