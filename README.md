@@ -1,6 +1,6 @@
-# Android Bluetooth Helper
+# Android Smooth Bluetooth
 
-Easy communication via bluetooth with other android devices or microcontrollers such as Arduino.
+Smooth communication via bluetooth with other android devices or microcontrollers such as Arduino.
 
 
 ## Getting Started
@@ -9,18 +9,18 @@ Add Gradle dependency:
 
 ```gradle
 dependencies {
-   compile 'io.palaima:bluetoothhelper-0.1'
+   compile 'io.palaima:smoothbluetooth:0.1.0'
 }
 ```
 
 * Or
-[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/bluetoothhelper/0.1/bluetoothhelper-0.1.aar)
+[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/smoothbluetooth/0.1/smoothbluetooth-0.1.aar)
 
 You can try the SNAPSHOT version:
 
 ```gradle
 dependencies {
-   compile 'io.palaima:bluetoothhelper-0.2-SNAPSHOT'
+   compile 'io.palaima:smoothbluetooth:0.2.0-SNAPSHOT'
 }
 ```
 Make sure to add the snapshot repository:
@@ -40,17 +40,18 @@ repositories {
 <uses-permission android:name="android.permission.BLUETOOTH" />
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 ```
-### 2. Define BluetoothHelper instance
+### 2. Define SmoothBluetooth instance
 ```java
-BluetoothHelper bluetoothHelper = new BluetoothHelper(Context context);
+SmoothBluetooth mSmoothBluetooth;
+mSmoothBluetooth = new SmoothBluetooth(Context context);
 ```
 there are possible overrides:
 ```java
-BluetoothHelper bluetoothHelper = new BluetoothHelper(Context context, BluetoothHelper.Listener listener);
+mSmoothBluetooth = new SmoothBluetooth(Context context, SmoothBluetooth.Listener listener);
 ```
 or
 ```java
-BluetoothHelper bluetoothHelper = new BluetoothHelper(Context context, ConnectionTo connectionTo, Connection connection, BluetoothHelper.Listener listener);
+mSmoothBluetooth = new SmoothBluetooth(Context context, ConnectionTo connectionTo, Connection connection, SmoothBluetooth.Listener listener);
 ```
 
 `ConnectionTo` defines to what type of device to connect with (by default it is `ConnectionTo.OTHER_DEVICE` which means microcontrollers like Arduino)
@@ -66,11 +67,11 @@ ConnectionTo.OTHER_DEVICE
 Connection.SECURE
 Connection.INSECURE
 ```
-### 3. Define BluetoothHelper.Listener
-After that you must define BluetoothHelper.Listener which catches all bluetooth related events and pass it to BluetoothHelper constructor when defining its instance or if you already have BluetoothHelper instance you can pass listener via setter `setListener(BluetoothHelperListener listener)`
+### 3. Define SmoothBluetooth.Listener
+After that you must define `SmoothBluetooth.Listener` which catches all bluetooth related events and pass it to `SmoothBluetooth` constructor when defining its instance or if you already have `SmoothBluetooth` instance you can pass listener via setter `setListener(SmoothBluetooth.Listener listener)`
 
 ```java
-private BluetoothHelper.Listener mListener = new BluetoothHelper.Listener() {
+private SmoothBluetooth.Listener mListener = new SmoothBluetooth.Listener() {
     @Override
     public void onBluetoothNotSupported() {
         //device does not support bluetooth
@@ -135,38 +136,50 @@ private BluetoothHelper.Listener mListener = new BluetoothHelper.Listener() {
 After everything is set up and all is left to do is try to connect
 
 ```java
-mBluetoothHelper.tryConnection();
+mSmoothBluetooth.tryConnection();
 ```
-`tryConnection()` is linked with BluetoothHelper.Listener so all connection events will be passed to listener.
+`tryConnection()` is linked with `SmoothBluetooth.Listener` so all connection events will be passed to listener.
+By default if everything is ok, immediately returns all paired devices to `SmoothBluetooth.Listener`'s `onDevicesFound`
 
-### 5. Sending data
+### 5. Discovering
+
+Call ```javamSmoothBluetooth.doDiscovery()``` method which search for unpaired devices and returns them to `SmoothBluetooth.Listener`'s `onDevicesFound`
+
+### 6. Sending data
 ```java
-mBluetoothHelper.send(byte[] data, boolean CRLF);
+mSmoothBluetooth.send(byte[] data, boolean CRLF);
 ```
 or
 ```java
-mBluetoothHelper.send(String data, boolean CRLF);
+mSmoothBluetooth.send(String data, boolean CRLF);
 ```
 `boolean CRLF` indicates if data is need to be send with ending by LF and CR or not.
 if you do not need CRLF at the end there are some overrides with `CRLF = false`
 ```java
-mBluetoothHelper.send(byte[] data);
-mBluetoothHelper.send(String data);
+mSmoothBluetooth.send(byte[] data);
+mSmoothBluetooth.send(String data);
 ```
 
-### 6. Do not forget to stop
-For instance in your activity where BluetoothHelper is defined you must call `stopService()`
+### 6. Disconnect
+
+```java
+mSmoothBluetooth.disconnect();
+```
+
+### 7. Do not forget to stop
+For instance in your activity where `SmoothBluetooth` is defined you must call `stop()`
 ```java
 @Override
 protected void onDestroy() {
     super.onDestroy();
-    mBluetoothHelper.stopService();
+    mSmoothBluetooth.stop();
 }
 ```
 
 ## Sample
 
 You can clone the project and compile it yourself (it includes a sample).
+[MainActivity](https://github.com/palaima/AndroidSmoothBluetooth/blob/master/app/src/main/java/io/palaima/smoothbluetooth/app/MainActivity.java)
 
 ## Contributing
 Want to contribute? You are welcome!
@@ -176,6 +189,11 @@ Developed By
 ------------
 
 * Mantas Palaima - <palaima.mantas@gmail.com>
+
+Credits
+------------
+
+Credit to Aidan Follestad's [Material Dialogs](https://github.com/afollestad/material-dialogs) library.
 
 License
 --------

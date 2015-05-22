@@ -1,4 +1,4 @@
-package io.palaima.bluetoothhelper.app;
+package io.palaima.smoothbluetooth.app;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.palaima.bluetooth.app.R;
@@ -24,15 +24,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.palaima.bluetoothhelper.BluetoothHelper;
-import io.palaima.bluetoothhelper.Device;
+import io.palaima.smoothbluetooth.SmoothBluetooth;
+import io.palaima.smoothbluetooth.Device;
 
 
 public class MainActivity extends AppCompatActivity {
 
     public static final int ENABLE_BT__REQUEST = 1;
 
-    private BluetoothHelper mBluetoothHelper;
+    private SmoothBluetooth mSmoothBluetooth;
 
     private Button mScanButton;
 
@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_main);
 
-        mBluetoothHelper = new BluetoothHelper(this);
+        mSmoothBluetooth = new SmoothBluetooth(this);
 
-        mBluetoothHelper.setListener(mListener);
+        mSmoothBluetooth.setListener(mListener);
 
         ListView responseListView = (ListView) findViewById(R.id.responses);
         mResponsesAdapter = new ArrayAdapter<>( this, android.R.layout.simple_list_item_1, mResponseBuffer);
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mSendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBluetoothHelper.send(mMessageInput.getText().toString(), mCRLFBox.isChecked());
+                mSmoothBluetooth.send(mMessageInput.getText().toString(), mCRLFBox.isChecked());
                 mMessageInput.setText("");
             }
         });
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         mDisconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBluetoothHelper.disconnect();
+                mSmoothBluetooth.disconnect();
                 mResponseBuffer.clear();
                 mResponsesAdapter.notifyDataSetChanged();
             }
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         mScanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBluetoothHelper.doDiscovery();
+                mSmoothBluetooth.doDiscovery();
             }
         });
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         mPairedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBluetoothHelper.tryConnection();
+                mSmoothBluetooth.tryConnection();
             }
         });
         mStateTv = (TextView) findViewById(R.id.state);
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mBluetoothHelper.stopService();
+        mSmoothBluetooth.stop();
     }
 
     @Override
@@ -149,12 +149,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ENABLE_BT__REQUEST) {
             if(resultCode == RESULT_OK) {
-                mBluetoothHelper.tryConnection();
+                mSmoothBluetooth.tryConnection();
             }
         }
     }
 
-    private BluetoothHelper.Listener mListener = new BluetoothHelper.Listener() {
+    private SmoothBluetooth.Listener mListener = new SmoothBluetooth.Listener() {
         @Override
         public void onBluetoothNotSupported() {
             Toast.makeText(MainActivity.this, "Bluetooth not found", Toast.LENGTH_SHORT).show();
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             mDeviceTv.setText("");
             Toast.makeText(MainActivity.this, "Failed to connect to " + device.getName(), Toast.LENGTH_SHORT).show();
             if (device.isPaired()) {
-                mBluetoothHelper.doDiscovery();
+                mSmoothBluetooth.doDiscovery();
             }
         }
 
@@ -216,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onDevicesFound(final List<Device> deviceList,
-                final BluetoothHelper.ConnectionCallback connectionCallback) {
+                final SmoothBluetooth.ConnectionCallback connectionCallback) {
 
             final MaterialDialog dialog = new MaterialDialog.Builder(MainActivity.this)
                     .title("Devices")

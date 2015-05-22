@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.palaima.bluetoothhelper;
+package io.palaima.smoothbluetooth;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class BluetoothHelper {
+public class SmoothBluetooth {
 
     public enum Connection {
         SECURE,
@@ -84,15 +84,16 @@ public class BluetoothHelper {
 
     private Device mCurrentDevice;
 
-    public BluetoothHelper(Context context) {
+    public SmoothBluetooth(Context context) {
         this(context, ConnectionTo.OTHER_DEVICE, Connection.SECURE, null);
     }
 
-    public BluetoothHelper(Context context, Listener listener) {
+    public SmoothBluetooth(Context context, Listener listener) {
         this(context, ConnectionTo.OTHER_DEVICE, Connection.SECURE, listener);
     }
 
-    public BluetoothHelper(Context context, ConnectionTo connectionTo, Connection connection, Listener listener) {
+    public SmoothBluetooth(Context context, ConnectionTo connectionTo, Connection connection,
+            Listener listener) {
         mContext = context;
         mListener = listener;
         mIsAndroid = connectionTo == ConnectionTo.ANDROID_DEVICE;
@@ -289,7 +290,7 @@ public class BluetoothHelper {
         }
     }
 
-    public void stopService() {
+    public void stop() {
         mCurrentDevice = null;
         if (isServiceAvailable()) {
             isServiceRunning = false;

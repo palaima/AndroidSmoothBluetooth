@@ -1,4 +1,4 @@
-package io.palaima.bluetoothhelper.app;
+package io.palaima.smoothbluetooth.app;
 
 
 import com.palaima.bluetooth.app.R;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import io.palaima.bluetoothhelper.Device;
+import io.palaima.smoothbluetooth.Device;
 
 public class DevicesAdapter extends BaseAdapter {
 
