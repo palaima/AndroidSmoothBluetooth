@@ -1,7 +1,8 @@
 # Android Smooth Bluetooth
 
-Smooth communication via bluetooth with other android devices or microcontrollers such as Arduino.
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android%20Smooth%20Bluetooth-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1859)
 
+Smooth communication via bluetooth with other android devices or microcontrollers such as Arduino.
 
 ## Getting Started
 
