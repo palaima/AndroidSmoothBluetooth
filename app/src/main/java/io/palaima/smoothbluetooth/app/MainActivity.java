@@ -1,17 +1,15 @@
 package io.palaima.smoothbluetooth.app;
 
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.palaima.bluetooth.app.R;
-
 import android.bluetooth.BluetoothAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,11 +19,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.palaima.bluetooth.app.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import io.palaima.smoothbluetooth.SmoothBluetooth;
 import io.palaima.smoothbluetooth.Device;
+import io.palaima.smoothbluetooth.SmoothBluetooth;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         mSmoothBluetooth.setListener(mListener);
 
         ListView responseListView = (ListView) findViewById(R.id.responses);
-        mResponsesAdapter = new ArrayAdapter<>( this, android.R.layout.simple_list_item_1, mResponseBuffer);
+        mResponsesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, mResponseBuffer);
         responseListView.setAdapter(mResponsesAdapter);
 
         mCRLFBox = (CheckBox) findViewById(R.id.carrage);
@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == ENABLE_BT__REQUEST) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == ENABLE_BT__REQUEST) {
+            if (resultCode == RESULT_OK) {
                 mSmoothBluetooth.tryConnection();
             }
         }
@@ -216,37 +216,29 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onDevicesFound(final List<Device> deviceList,
-                final SmoothBluetooth.ConnectionCallback connectionCallback) {
+                                   final SmoothBluetooth.ConnectionCallback connectionCallback) {
 
-            final MaterialDialog dialog = new MaterialDialog.Builder(MainActivity.this)
-                    .title("Devices")
-                    .adapter(new DevicesAdapter(MainActivity.this, deviceList))
-                    .build();
-
-            ListView listView = dialog.getListView();
-            if (listView != null) {
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        connectionCallback.connectTo(deviceList.get(position));
-                        dialog.dismiss();
-                    }
-
-                });
-            }
-
-            dialog.show();
-
+            new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("Device")
+                    .setAdapter(new DevicesAdapter(MainActivity.this, deviceList),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    connectionCallback.connectTo(deviceList.get(which));
+                                }
+                            })
+                    .create()
+                    .show();
         }
 
         @Override
         public void onDataReceived(int data) {
             mBuffer.add(data);
             if (data == 62 && !mBuffer.isEmpty()) {
-            //if (data == 0x0D && !mBuffer.isEmpty() && mBuffer.get(mBuffer.size()-2) == 0xA0) {
+                //if (data == 0x0D && !mBuffer.isEmpty() && mBuffer.get(mBuffer.size()-2) == 0xA0) {
                 StringBuilder sb = new StringBuilder();
                 for (int integer : mBuffer) {
-                    sb.append((char)integer);
+                    sb.append((char) integer);
                 }
                 mBuffer.clear();
                 mResponseBuffer.add(0, sb.toString());
