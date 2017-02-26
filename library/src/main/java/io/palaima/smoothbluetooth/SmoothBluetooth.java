@@ -186,7 +186,7 @@ public class SmoothBluetooth {
         mListener = listener;
     }
 
-    private void connect(Device device, boolean android, boolean secure) {
+    public void connect(Device device, boolean android, boolean secure) {
         mCurrentDevice = device;
         if (mListener != null) {
             mListener.onConnecting(device);
@@ -306,7 +306,7 @@ public class SmoothBluetooth {
         }, 500);
     }
 
-    private void connect(String address, boolean android, boolean secure) {
+    public void connect(String address, boolean android, boolean secure) {
         if (isConnecting) {
             return;
         }
