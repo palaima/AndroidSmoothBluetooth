@@ -10,27 +10,15 @@ Add Gradle dependency:
 
 ```gradle
 dependencies {
-   compile 'io.palaima:smoothbluetooth:0.1.0'
+    implementation 'com.github.yashx:AndroidSmoothBluetooth:master-SNAPSHOT'
 }
 ```
 
-* Or
-[Download from Maven](https://oss.sonatype.org/content/repositories/releases/io/palaima/smoothbluetooth/0.1.0/smoothbluetooth-0.1.0.aar)
-
-You can try the SNAPSHOT version:
-
-```gradle
-dependencies {
-   compile 'io.palaima:smoothbluetooth:0.2.0-SNAPSHOT'
-}
-```
 Make sure to add the snapshot repository:
 
 ```gradle
 repositories {
-    maven {
-        url "https://oss.sonatype.org/content/repositories/snapshots"
-    }
+    maven {url "https://jitpack.io"}
 }
 ```
 
@@ -146,6 +134,11 @@ mSmoothBluetooth.tryConnection();
 ```
 `tryConnection()` is linked with `SmoothBluetooth.Listener` so all connection events will be passed to listener.
 By default if everything is ok, immediately returns all paired devices to `SmoothBluetooth.Listener`'s `onDevicesFound`
+
+or
+```java
+mSmoothBluetooth.autoconnect("MAC ID HERE");
+```
 
 ### 5. Discovering
 ```java
