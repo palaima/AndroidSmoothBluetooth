@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +84,8 @@ public class SmoothBluetooth {
     private ArrayList<Device> mDevices = new ArrayList<>();
 
     private Device mCurrentDevice;
+
+    private boolean pairedDeviceFlag;
 
     public SmoothBluetooth(Context context) {
         this(context, ConnectionTo.OTHER_DEVICE, Connection.SECURE, null);
@@ -150,6 +153,40 @@ public class SmoothBluetooth {
         } else {
             doDiscovery();
         }
+    }
+
+    public void autoconnect(String id) {
+        if (!checkBluetooth()) {
+            return;
+        }
+
+        pairedDeviceFlag = false;
+
+        String name = null;
+        String address = null;
+
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                name = device.getName();
+                address = device.getAddress();
+                if(id.compareTo(device.getAddress()) == 0 ) {
+                    pairedDeviceFlag = true;
+                    break;
+                }
+            }
+            if(pairedDeviceFlag == true && name != null){
+                Toast.makeText(mContext,id + " is Paired.",Toast.LENGTH_SHORT);
+                connect(new Device(name,address,true),mIsAndroid,mIsSecure);
+            }
+            else{
+                Toast.makeText(mContext,id + " is not Paired.",Toast.LENGTH_SHORT);
+                doDiscovery();
+            }
+
+        }
+
     }
 
     public boolean isBluetoothAvailable() {
