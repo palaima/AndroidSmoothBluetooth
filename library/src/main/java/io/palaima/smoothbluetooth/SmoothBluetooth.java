@@ -194,6 +194,8 @@ public class SmoothBluetooth {
             }
             else{
                 Toast.makeText(mContext,id + " is not Paired.",Toast.LENGTH_SHORT);
+                usingAutoConnect = false;
+                doDiscovery();
             }
 
         }
