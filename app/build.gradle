@@ -7,13 +7,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId "io.palaima.smoothbluetooth.app"
         minSdkVersion 15
-        targetSdkVersion 22
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -26,10 +25,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:22.1.1'
-    compile 'com.android.support:recyclerview-v7:22.0.0'
-    compile 'com.afollestad:material-dialogs:0.6.2.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+
+    implementation 'com.github.pepperonas:materialdialog:0.3.4'
+
     //compile project (':library')
-    compile 'io.palaima:smoothbluetooth:0.1.0'
+    implementation 'com.github.yashx:AndroidSmoothBluetooth:master-SNAPSHOT'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 }

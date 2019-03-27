@@ -1,7 +1,7 @@
 package io.palaima.smoothbluetooth.app;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.palaima.bluetooth.app.R;
+import com.pepperonas.materialdialog.MaterialDialog;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -26,6 +26,8 @@ import java.util.List;
 
 import io.palaima.smoothbluetooth.SmoothBluetooth;
 import io.palaima.smoothbluetooth.Device;
+
+import static java.lang.Boolean.TRUE;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -149,7 +151,10 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ENABLE_BT__REQUEST) {
             if(resultCode == RESULT_OK) {
-                mSmoothBluetooth.tryConnection();
+                if (mSmoothBluetooth.isUsingAutoConnect())
+                    mSmoothBluetooth.autoconnect("00:18:E4:34:E5:DA");
+                else
+                    mSmoothBluetooth.tryConnection();
             }
         }
     }
@@ -219,22 +224,12 @@ public class MainActivity extends AppCompatActivity {
                 final SmoothBluetooth.ConnectionCallback connectionCallback) {
 
             final MaterialDialog dialog = new MaterialDialog.Builder(MainActivity.this)
-                    .title("Devices")
-                    .adapter(new DevicesAdapter(MainActivity.this, deviceList))
-                    .build();
-
-            ListView listView = dialog.getListView();
-            if (listView != null) {
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        connectionCallback.connectTo(deviceList.get(position));
-                        dialog.dismiss();
-                    }
-
-                });
-            }
-
+                    .title("Devices").adapter(TRUE,new DevicesAdapter(MainActivity.this,deviceList),new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            connectionCallback.connectTo(deviceList.get(position));
+                        }
+                    }).build();
             dialog.show();
 
         }
