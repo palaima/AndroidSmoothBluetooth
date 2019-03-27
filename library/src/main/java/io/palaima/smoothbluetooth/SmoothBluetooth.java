@@ -87,8 +87,14 @@ public class SmoothBluetooth {
 
     private boolean pairedDeviceFlag;
 
+    private boolean usingAutoConnect ;
+
     public SmoothBluetooth(Context context) {
         this(context, ConnectionTo.OTHER_DEVICE, Connection.SECURE, null);
+    }
+
+    public boolean isUsingAutoConnect() {
+        return usingAutoConnect;
     }
 
     public SmoothBluetooth(Context context, Listener listener) {
@@ -122,6 +128,9 @@ public class SmoothBluetooth {
     }
 
     public void tryConnection() {
+
+        usingAutoConnect = false;
+
         if (!checkBluetooth()) {
             return;
         }
@@ -156,6 +165,9 @@ public class SmoothBluetooth {
     }
 
     public void autoconnect(String id) {
+
+        usingAutoConnect = true;
+
         if (!checkBluetooth()) {
             return;
         }
@@ -182,7 +194,6 @@ public class SmoothBluetooth {
             }
             else{
                 Toast.makeText(mContext,id + " is not Paired.",Toast.LENGTH_SHORT);
-                doDiscovery();
             }
 
         }
